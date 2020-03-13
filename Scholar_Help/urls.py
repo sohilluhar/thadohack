@@ -48,7 +48,6 @@ urlpatterns = [
     path('adduser', views.adduser),
 
     path('user-aadhar-reg/', views.user_aadhar_reg),
-    path('create-pdf/', views.generatepdf),
     path('sendotp', views.sendotp),
     path('verifyotp/', views.verifyotp),
     path('checkotp', views.checkotp),
