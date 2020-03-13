@@ -42,7 +42,7 @@ def login(request):
     return render(request, 'login.html', {})
 
 def test(request):
-    return render(request, 'ministries.html', {})
+    return render(request, 'doctument_page.html', {})
 
 
 def adminlogin(request):
