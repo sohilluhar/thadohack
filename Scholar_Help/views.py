@@ -7,7 +7,6 @@ import pyrebase
 from cryptography.fernet import Fernet
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from pdfkit import pdfkit
 from pytesseract import pytesseract
 
 from . import Common
@@ -45,7 +44,7 @@ def login(request):
 
 
 def test(request):
-    return render(request, 'profile_user.html', {})
+    return render(request, 'reported_user.html', {})
 
 
 def adminlogin(request):
@@ -322,8 +321,6 @@ def adminupdattrust(request):
                       {"swicon": "error", "swtitle": "Error", "swmsg": "Please try again", "path": ""})
 
 
-def generatepdf():
-    pdfkit.from_url(['google.com', 'yandex.ru', 'engadget.com'], 'out.pdf')
 
 
 def trust_login(request):
