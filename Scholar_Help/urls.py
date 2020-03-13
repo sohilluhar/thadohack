@@ -79,5 +79,5 @@ urlpatterns = [
     path('removetrust', views.removetrust),
 
     path('adminlogout', views.adminlogout),
-    path('', views.home)
+    path('', views.login)
 ]

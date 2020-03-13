@@ -1242,6 +1242,12 @@ nav .action-links li .sell-btn {
     transform: translateY(-50%);
 }
 
+.p_style{
+     color: grey !important;
+    font-size: 14px !important;
+    font-family: Karla-Regular !important;
+}
+
 /*Animation*/
 .anim-typewriter {
     animation: typewriter 4s steps(50) 1s 1 normal both;
@@ -1255,5 +1261,6 @@ nav .action-links li .sell-btn {
         width: 22.5em;
     }
 }
+
 
 /*# sourceMappingURL=styles.css.map */
