@@ -41,6 +41,9 @@ def home(request):
 def login(request):
     return render(request, 'login.html', {})
 
+def test(request):
+    return render(request, 'ministries.html', {})
+
 
 def adminlogin(request):
     return render(request, 'adminlogin.html', {})
