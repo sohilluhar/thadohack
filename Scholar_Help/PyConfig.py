@@ -1,10 +1,9 @@
 config1 = {
-    "apiKey": "AIzaSyArPSVhwHv-rxxehxy0OUCE1ILCGXp17bI",
-    "authDomain": "scholar-help-966a2.firebaseapp.com",
-    "databaseURL": "https://scholar-help-966a2.firebaseio.com",
-    "projectId": "scholar-help-966a2",
-    "storageBucket": "scholar-help-966a2.appspot.com",
-    "messagingSenderId": "988235258939",
-    "appId": "1:988235258939:web:14290d685174b9461e901e",
-    "measurementId": "G-RM8V5QZ205"
+    "apiKey": "AIzaSyDoWq203bF2ryiODCG7OQ4cizoiU6e1iLA",
+    "authDomain": "rgit-hack.firebaseapp.com",
+    "databaseURL": "https://rgit-hack.firebaseio.com",
+    "projectId": "rgit-hack",
+    "storageBucket": "rgit-hack.appspot.com",
+    "messagingSenderId": "602679207194",
+    "appId": "1:602679207194:web:69f0008bbf520f996578a3"
 }
