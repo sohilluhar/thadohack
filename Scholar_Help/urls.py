@@ -57,6 +57,8 @@ urlpatterns = [
     path('runmlalgo', views.runmlalgo),
     url(r'^ministry/(?P<pk>\d+)$', views.getallservices),
     url(r'^services/(?P<pk>\d+)$', views.getservice),
+    url(r'^autofill/(?P<pk>\d+)$', views.autofill),
+
     path('changepassword/', views.changepassword),
     path('updatepassword', views.updatepassword),
     # -----------------------------------------------------------------------

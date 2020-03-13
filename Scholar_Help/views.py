@@ -414,6 +414,33 @@ def runmlalgo(req):
                    "path": "login"})
 
 
+def autofill(req, pk):
+    from PIL import Image
+    import requests
+    from io import BytesIO
+
+    response = requests.get(req.POST['fileurl'])
+
+    print(req.POST['fileurl'])
+    image_path_in_colab = Image.open(BytesIO(response.content))
+
+    # image_path_in_colab="https://i.ytimg.com/vi/zJFHOJDIX30/maxresdefault.jpg"
+    # extractedInformation = pytesseract.image_to_string(Image.open(image_path_in_colab))
+    extractedInformation = pytesseract.image_to_string(image_path_in_colab)
+    print(extractedInformation)
+    import re
+    found = " "
+    m = re.search('SR\.NO\.(.+?)\.', extractedInformation)
+    if m:
+        found = m.group(1)
+        print(found, " matches")
+    db = connect_firebase()
+    servicedetails = db.child("Service").child(str(pk)).get().val()
+    return render(req, 'doctument_page2.html',
+                  {"user": Common.currentUser, "servicedetails": servicedetails, "foundsrno":
+                      found})
+
+
 def addusertodb(request):
     passw = request.POST['pass']
     db = connect_firebase()
@@ -479,7 +506,8 @@ def getallservices(req, pk):
 def getservice(req, pk):
     db = connect_firebase()
     servicedetails = db.child("Service").child(str(pk)).get().val()
-    return render(req, 'doctument_page.html', {"user": Common.currentUser, "servicedetails": servicedetails})
+    return render(req, 'doctument_page.html',
+                  {"user": Common.currentUser, "servicedetails": servicedetails, "key": str(pk)})
 
 
 def trust_verify(request):

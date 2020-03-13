@@ -69,11 +69,7 @@
 
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <form action="/autofill/{{ key }}"
-
-                                            {#                                          onsubmit="return false"#}
-                                          method="post">
-                                        {% csrf_token %}
+                                    <form action="/autofill" method="post">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -97,6 +93,7 @@
                                         <!-- /.row -->
 
                                         <div class="row">
+                                            <p>{{ extractedInformation }}</p>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="exampleInputFile">Upload Document</label>
@@ -106,13 +103,11 @@
                                                                    required>
                                                             <input type="hidden" class="" name="fileurl" id="fileurl"
                                                                    required>
-                                                            <button type="button"
+                                                            <button type="submit"
                                                                     onclick="uploadimage('{{ user.aadharno }}')"
                                                                     class="btn btn-primary mr-4">Upload
                                                             </button>
-                                                            <button type="submit" class="btn btn-primary mr-4"
-                                                                    name="nextbtn">Next
-                                                            </button>
+                                                            <button class="btn btn-primary mr-4">Auto Fill</button>
 
                                                         </div>
                                                     </div>
@@ -124,7 +119,7 @@
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Certificate No.</label>
                                                     <input type="text" class="form-control" id="cno" name="cno"
-                                                           value="1234789054433">
+                                                           value="{{ foundsrno }}">
                                                 </div>
 
                                             </div>
@@ -297,7 +292,6 @@
 
 
     function uploadimage(filename) {
-        var ch = false;
         var storage = firebase.storage();
         var file = document.getElementById("document").files[0];
         var storageRef = storage.ref();
@@ -332,7 +326,6 @@
                         console.log('File available at', downloadURL);
 
                         document.getElementById("fileurl").value = downloadURL;
-                        ch = true;
                         {#console.log(document.getElementById(viewfilelink));#}
                         {#document.getElementById(viewfilelink).href = downloadURL;#}
                         {#document.getElementById(viewfilelink).setAttribute('target', '_blank');#}
@@ -348,7 +341,6 @@
                     title: 'File Size limit exceeded',
                     text: 'Upload file less than 5 MB',
                 });
-                return false;
             }
 
         } else {
@@ -357,14 +349,6 @@
                 title: 'File Type not Allowed',
                 text: 'Upload only pdf,jpg,jpeg,png file',
             });
-            return false;
-        }
-
-
-        if (ch) {
-            return ch;
-        } else {
-            return false;
         }
     }
 
