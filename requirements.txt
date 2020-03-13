@@ -1,3 +1,4 @@
 django
 pyrebase4
 cryptography
+pytesseract

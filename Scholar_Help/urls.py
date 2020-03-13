@@ -46,10 +46,17 @@ urlpatterns = [
     path('register/', views.register),
     path('verify', views.verify),
     path('adduser', views.adduser),
-    path('forgotpassword/', views.forgotpass),
+
+    path('user-aadhar-reg/', views.user_aadhar_reg),
+    path('create-pdf/', views.generatepdf),
     path('sendotp', views.sendotp),
     path('verifyotp/', views.verifyotp),
     path('checkotp', views.checkotp),
+    path('user-reg', views.user_reg),
+    path('remove', views.removethis),
+    path('addusertodb', views.addusertodb),
+    path('runmlalgo', views.runmlalgo),
+
     path('changepassword/', views.changepassword),
     path('updatepassword', views.updatepassword),
 

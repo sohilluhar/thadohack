@@ -7,6 +7,8 @@ import pyrebase
 from cryptography.fernet import Fernet
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from pdfkit import pdfkit
+from pytesseract import pytesseract
 
 from . import Common
 from . import PyConfig
@@ -40,6 +42,7 @@ def home(request):
 
 def login(request):
     return render(request, 'login.html', {})
+
 
 def test(request):
     return render(request, 'profile_user.html', {})
@@ -319,37 +322,44 @@ def adminupdattrust(request):
                       {"swicon": "error", "swtitle": "Error", "swmsg": "Please try again", "path": ""})
 
 
+def generatepdf():
+    pdfkit.from_url(['google.com', 'yandex.ru', 'engadget.com'], 'out.pdf')
+
+
 def trust_login(request):
     return render(request, 'trust_login.html', {})
 
 
-def forgotpass(request):
-    return render(request, 'forgotpass.html', {})
+def user_aadhar_reg(request):
+    return render(request, 'user_adhar_reg.html', {})
 
 
 def sendotp(request):
     db = connect_firebase()
     user = OrderedDict()
-    getmail = request.POST['mail']
+    checkadhaar = request.POST['aadharno']
     try:
-        user = db.child("users").order_by_child("mail").equal_to(getmail).get().val()
+        user = db.child("AdharData").child(checkadhaar).get().val()
     except:
         print("Error")
 
     if not user:
         return render(request, 'redirecthome.html',
-                      {"swicon": "error", "swtitle": "Error", "swmsg": "Mail Id is not registered",
-                       "path": "forgotpassword"})
+                      {"swicon": "error", "swtitle": "Error", "swmsg": "Invalid Adhar Number",
+                       "path": "user-aadhar-reg"})
 
     otp = str(randint(1000, 9999))
-    Common.forgotpassotp = otp
-    Common.forgotpassotptime = datetime.now()
-    title = "Reset Your Password"
-    msg = "Enter following OTP within 15 minutes to chage your password.\nOTP is " + otp
+
+    Common.adharotp = otp
+    print(otp, " is otp")
+    Common.adharotptime = datetime.now()
+    Common.tempuser = user
+    title = "Adhar verification"
+    msg = "Enter following OTP within 15 minutes.\nOTP is " + otp
     for key, value in user.items():
         Common.userphone = key
-
-    sendmail(getmail, title, msg)
+    print(user)
+    sendmail(user.get("mail"), title, msg)
     return HttpResponseRedirect('/verifyotp')
 
 
@@ -359,20 +369,66 @@ def verifyotp(request):
 
 def checkotp(request):
     getOTP = request.POST['otp']
-    diff = datetime.now() - Common.forgotpassotptime
+    diff = datetime.now() - Common.adharotptime
     otptime = diff.total_seconds()
-    if getOTP != Common.forgotpassotp:
+    print('enter otp ', getOTP)
+    print(' otp  is', Common.adharotptime)
+    if getOTP != Common.adharotp:
         return render(request, 'redirecthome.html',
                       {"swicon": "error", "swtitle": "Error", "swmsg": "Wrong OTP Entered", "path": "verifyotp"})
     elif otptime > 15 * 60:
         return render(request, 'redirecthome.html',
                       {"swicon": "error", "swtitle": "Error", "swmsg": "OTP Expired", "path": "login"})
     else:
-        return HttpResponseRedirect('/changepassword')
+        return HttpResponseRedirect('/user-reg')
 
 
 def changepassword(request):
-    return render(request, 'changepassword.html', {})
+    return render(request, 'user-choosepass.html', {})
+
+
+def user_reg(request):
+    return render(request, 'user-choosepass.html', {"user": Common.tempuser})
+
+
+def removethis(req):
+    db = connect_firebase()
+    db.child("users").child(str(335179014426)).update(
+        {"enckey": Fernet.generate_key().decode()})
+
+    return render(req, 'redirecthome.html',
+                  {"swicon": "success", "swtitle": "Done", "swmsg": "Registration Successfully.",
+                   "path": "login"})
+
+
+def runmlalgo(req):
+    from PIL import Image
+    import requests
+    from io import BytesIO
+
+    response = requests.get(
+        "https://firebasestorage.googleapis.com/v0/b/rgit-hack.appspot.com/o/Screenshot%20from%202020-03-13%2022-23-13.png?alt=media&token=fdcba8e7-a5cd-4c7c-b99f-e893444abce9")
+    image_path_in_colab = Image.open(BytesIO(response.content))
+
+    # image_path_in_colab="https://i.ytimg.com/vi/zJFHOJDIX30/maxresdefault.jpg"
+    # extractedInformation = pytesseract.image_to_string(Image.open(image_path_in_colab))
+    extractedInformation = pytesseract.image_to_string(image_path_in_colab)
+    print(extractedInformation)
+    return render(req, 'redirecthome.html',
+                  {"swicon": "success", "swtitle": "Done", "swmsg": extractedInformation,
+                   "path": "login"})
+
+
+def addusertodb(request):
+    passw = request.POST['pass']
+    db = connect_firebase()
+    db.child("users").child(Common.tempuser.get("aadharno")).update(Common.tempuser)
+    db.child("users").child(Common.tempuser.get("aadharno")).update(
+        {"password": passw, "enckey": Fernet.generate_key().decode()})
+
+    return render(request, 'redirecthome.html',
+                  {"swicon": "success", "swtitle": "Done", "swmsg": "Registration Successfully.",
+                   "path": "login"})
 
 
 def updatepassword(request):
@@ -780,7 +836,7 @@ def profile_personalDetails(request):
             accno = cipher.decrypt(userprofile.get("account_number").encode()).decode()
         except:
             print("Error")
-        
+
         if (Common.currentUser.val().get("profilefill") != "100"):
             return render(request, 'user_profileDetails.html',
                           {"userprofile": userprofile, "currentuser": Common.currentUser.val(), "accno": accno})
