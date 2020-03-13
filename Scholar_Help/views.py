@@ -407,7 +407,7 @@ def runmlalgo(req):
     from io import BytesIO
 
     response = requests.get(
-        "https://firebasestorage.googleapis.com/v0/b/rgit-hack.appspot.com/o/Screenshot%20from%202020-03-13%2022-23-13.png?alt=media&token=fdcba8e7-a5cd-4c7c-b99f-e893444abce9")
+        "https://firebasestorage.googleapis.com/v0/b/rgit-hack.appspot.com/o/Adhaar%20jpeg.JPG?alt=media&token=233861a1-1093-4b0f-908e-0feba7630621")
     image_path_in_colab = Image.open(BytesIO(response.content))
 
     # image_path_in_colab="https://i.ytimg.com/vi/zJFHOJDIX30/maxresdefault.jpg"

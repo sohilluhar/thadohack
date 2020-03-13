@@ -18,16 +18,16 @@ def main():
         b'sigflags': 3,
         # b'sigpage': 0,
         b'sigbutton': True,
-        b'signature_img': b'signature_test.png',
-        b'contact': b'mak@trisoft.com.pl',
-        b'location': b'Szczecin',
+        b'signature_img': b'sign.png',
+        b'contact': b'sohil.l@somaiya.edu',
+        b'location': b'India',
         b'signingdate': date.encode(),
-        b'reason': b'Dokument podpisany cyfrowo',
-        b'signature': b'Dokument podpisany cyfrowo',
+        b'reason': b'Verified Document',
+        b'signature': b'Approved By Goverment',
         b'signaturebox': (470, 0, 570, 100),
     }
-    with open('demo2_user2.p12', 'rb') as fp:
-        p12 = pkcs12.load_key_and_certificates(fp.read(), b'1234', backends.default_backend())
+    with open('Key.p12', 'rb') as fp:
+        p12 = pkcs12.load_key_and_certificates(fp.read(), b'Sky@76445', backends.default_backend())
     fname = 'anyname.pdf'
     if len(sys.argv) > 1:
         fname = sys.argv[1]
