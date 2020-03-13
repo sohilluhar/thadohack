@@ -28,7 +28,7 @@ def main():
     }
     with open('Key.p12', 'rb') as fp:
         p12 = pkcs12.load_key_and_certificates(fp.read(), b'Sky@76445', backends.default_backend())
-    fname = 'anyname.pdf'
+    fname = 'resume.pdf'
     if len(sys.argv) > 1:
         fname = sys.argv[1]
     datau = open(fname, 'rb').read()
