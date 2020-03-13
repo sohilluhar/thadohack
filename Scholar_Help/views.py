@@ -321,8 +321,6 @@ def adminupdattrust(request):
                       {"swicon": "error", "swtitle": "Error", "swmsg": "Please try again", "path": ""})
 
 
-
-
 def trust_login(request):
     return render(request, 'trust_login.html', {})
 
@@ -443,11 +441,11 @@ def updatepassword(request):
 
 def verify(request):
     if not Common.isLogin:
-        mail = request.POST.get('mail')
+        aadharno = request.POST.get('aadharno')
         password = request.POST.get('password')
 
         db = connect_firebase()
-        user = db.child("users").child(mail).get()
+        user = db.child("users").child(aadharno).get()
 
         if not user.val():
             return render(request, 'redirecthome.html',
@@ -456,7 +454,8 @@ def verify(request):
             c = {'user': user.val()}
             Common.currentUser = user
             Common.isLogin = True
-            return HttpResponseRedirect('/')
+
+            return HttpResponseRedirect('/userdashboard')
         else:
             return render(request, 'redirecthome.html',
                           {"swicon": "error", "swtitle": "Error", "swmsg": "Invalid Password",
@@ -464,6 +463,19 @@ def verify(request):
     else:
         c = {'user': Common.currentUser.val()}
         return HttpResponseRedirect('/')
+
+
+def userdashboard(req):
+    db = connect_firebase()
+    ministry = db.child("Ministry").get().val()
+    return render(req, 'ministries.html',
+                  {"user": Common.currentUser, "ministry": ministry})
+
+
+def getallservices(req, pk):
+    db = connect_firebase()
+    allservice = db.child("Service").order_by_child("ministry").equal_to("123").get().val()
+    return render(req, 'ministries_service.html', {"user": Common.tempuser, "service": allservice})
 
 
 def trust_verify(request):

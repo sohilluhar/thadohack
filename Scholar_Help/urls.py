@@ -52,13 +52,13 @@ urlpatterns = [
     path('verifyotp/', views.verifyotp),
     path('checkotp', views.checkotp),
     path('user-reg', views.user_reg),
-    path('remove', views.removethis),
     path('addusertodb', views.addusertodb),
+    path('userdashboard', views.userdashboard),
     path('runmlalgo', views.runmlalgo),
-
+    url(r'^services/(?P<pk>\d+)$', views.getallservices),
     path('changepassword/', views.changepassword),
     path('updatepassword', views.updatepassword),
-
+    # -----------------------------------------------------------------------
     path('profile-personalDetails', views.profile_personalDetails),
     path('saveuserpersonalinfo', views.saveuserpersonalinfo),
     path('profile-familyDetails', views.profile_familyDetails),

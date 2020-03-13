@@ -19,7 +19,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Select Services</h1>
+                        <h1>Institutes</h1>
                     </div>
 
                 </div>
@@ -41,65 +41,30 @@
 
                             <div class="card-body">
 
-        <div class="row">
+                                <div class="row">
 
-          <div class="col-md-3 col-sm-6 col-12">
-               <a href="#" class="text-dark">
+                                    {% for key,val in service.items %}
 
-                <div class="card" style="width: 15rem;">
-                  <img src="{% static '/image/adharcard.jpeg' %}" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="text-center">Service One</h5>
+                                        <div class="col-md-3 col-sm-6 col-12">
+                                            <a href="services/{{ key }}" class="text-dark">
 
-                  </div>
-                </div></a>
-          </div>
-          <!-- /.col -->
+                                                <div class="card" style="width: 15rem;">
+                                                    <img src="{{ val.logo }}" class="card-img-top"
+                                                         alt="...">
+                                                    <div class="card-body">
+                                                        <h5 class="text-center">{{ val.name }}</h5>
 
-             <div class="col-md-3 col-sm-6 col-12">
-               <a href="#" class="text-dark">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- /.col -->
 
-                <div class="card" style="width: 15rem;">
-                  <img src="{% static '/image/adharcard.jpeg' %}" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="text-center">Service One</h5>
-
-                  </div>
-                </div></a>
-          </div>
-          <!-- /.col -->
-
-             <div class="col-md-3 col-sm-6 col-12">
-               <a href="#" class="text-dark">
-
-                <div class="card" style="width: 15rem;">
-                  <img src="{% static '/image/adharcard.jpeg' %}" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="text-center">Service One</h5>
-
-                  </div>
-                </div></a>
-          </div>
-          <!-- /.col -->
-
-             <div class="col-md-3 col-sm-6 col-12">
-               <a href="#" class="text-dark">
-
-                <div class="card" style="width: 15rem;">
-                  <img src="{% static '/image/adharcard.jpeg' %}" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="text-center">Service One</h5>
-
-                  </div>
-                </div></a>
-          </div>
-          <!-- /.col -->
+                                    {% endfor %}
 
 
-
-
-        </div>
-        <!-- /.row -->
+                                </div>
+                                <!-- /.row -->
 
                             </div>
 
