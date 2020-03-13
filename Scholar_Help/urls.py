@@ -55,7 +55,8 @@ urlpatterns = [
     path('addusertodb', views.addusertodb),
     path('userdashboard', views.userdashboard),
     path('runmlalgo', views.runmlalgo),
-    url(r'^services/(?P<pk>\d+)$', views.getallservices),
+    url(r'^ministry/(?P<pk>\d+)$', views.getallservices),
+    url(r'^services/(?P<pk>\d+)$', views.getservice),
     path('changepassword/', views.changepassword),
     path('updatepassword', views.updatepassword),
     # -----------------------------------------------------------------------

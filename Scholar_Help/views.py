@@ -445,13 +445,12 @@ def verify(request):
         password = request.POST.get('password')
 
         db = connect_firebase()
-        user = db.child("users").child(aadharno).get()
+        user = db.child("users").child(aadharno).get().val()
 
-        if not user.val():
+        if not user:
             return render(request, 'redirecthome.html',
                           {"swicon": "error", "swtitle": "Error", "swmsg": "User does not exists", "path": "login"})
-        elif password == user.val().get("password"):
-            c = {'user': user.val()}
+        elif password == user.get("password"):
             Common.currentUser = user
             Common.isLogin = True
 
@@ -461,7 +460,6 @@ def verify(request):
                           {"swicon": "error", "swtitle": "Error", "swmsg": "Invalid Password",
                            "path": "login"})
     else:
-        c = {'user': Common.currentUser.val()}
         return HttpResponseRedirect('/')
 
 
@@ -475,7 +473,13 @@ def userdashboard(req):
 def getallservices(req, pk):
     db = connect_firebase()
     allservice = db.child("Service").order_by_child("ministry").equal_to("123").get().val()
-    return render(req, 'ministries_service.html', {"user": Common.tempuser, "service": allservice})
+    return render(req, 'ministries_service.html', {"user": Common.currentUser, "service": allservice})
+
+
+def getservice(req, pk):
+    db = connect_firebase()
+    servicedetails = db.child("Service").child(str(pk)).get().val()
+    return render(req, 'doctument_page.html', {"user": Common.currentUser, "servicedetails": servicedetails})
 
 
 def trust_verify(request):

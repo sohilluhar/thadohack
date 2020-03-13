@@ -19,7 +19,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Institutes</h1>
+                        <h1>Select Services</h1>
                     </div>
 
                 </div>
@@ -46,7 +46,7 @@
                                     {% for key,val in service.items %}
 
                                         <div class="col-md-3 col-sm-6 col-12">
-                                            <a href="services/{{ key }}" class="text-dark">
+                                            <a href="/services/{{ key }}" class="text-dark">
 
                                                 <div class="card" style="width: 15rem;">
                                                     <img src="{{ val.logo }}" class="card-img-top"
