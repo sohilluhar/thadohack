@@ -1,3 +1,4 @@
+cv2
 django
 pyrebase4
 cryptography
