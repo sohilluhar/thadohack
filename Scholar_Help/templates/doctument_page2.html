@@ -26,6 +26,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>{{ servicedetails.name }}</h1>
+                        <h1>{{ error }}</h1>
                     </div>
 
                 </div>
@@ -69,7 +70,7 @@
 
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <form action="/autofill" method="post">
+                                    <form action="/validatedoc" method="post">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -93,21 +94,22 @@
                                         <!-- /.row -->
 
                                         <div class="row">
-                                            <p>{{ extractedInformation }}</p>
+                                            <p>{{ extractedInformation|linebreaks }}</p>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="exampleInputFile">Upload Document</label>
+                                                    <label for="exampleInputFile">Uploaded Document</label>
                                                     <div class="input-group">
                                                         <div class="custom-file">
-                                                            <input type="file" class="" id="document" name="document"
-                                                                   required>
+
                                                             <input type="hidden" class="" name="fileurl" id="fileurl"
-                                                                   required>
-                                                            <button type="submit"
-                                                                    onclick="uploadimage('{{ user.aadharno }}')"
-                                                                    class="btn btn-primary mr-4">Upload
-                                                            </button>
-                                                            <button class="btn btn-primary mr-4">Auto Fill</button>
+                                                                   required value="{{ urllink }}">
+                                                            <input type="hidden" class="" name="key" id="key"
+                                                                   required value="{{ key }}">
+                                                            <input type="hidden" class="" name="sername" id="sername"
+                                                                   required value="{{ servicedetails.name }}">
+                                                            <a href="{{ urllink }}" target="_blank"
+                                                               class="btn btn-primary mr-4">View
+                                                            </a>
 
                                                         </div>
                                                     </div>
@@ -132,9 +134,14 @@
 
 
                                                 <div class="form-group">
-                                                    <label for="exampleInputEmail1">Issued Dated</label>
-                                                    <input type="date" class="form-control" id="i_date" name="i_date"
-                                                           value="1234789054433">
+                                                    <label for="exampleInputEmail1">Name as in Document</label>
+                                                    <input type="text" class="form-control" disabled
+
+                                                           value="{{ foundname }}">
+                                                    <input type="hidden" class="form-control" id="name_doc"
+                                                           name="name_doc"
+
+                                                           value="{{ foundname }}">
                                                 </div>
 
                                             </div>
@@ -144,14 +151,14 @@
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Verify Document</label><br>
 
-                                                    <button class="btn btn-success">Authenticate</button>
+                                                    <button class="btn btn-success" type="submit">Authenticate</button>
 
                                                     <!-- Button trigger modal -->
                                                     <button type="button" class="btn btn-default" data-toggle="modal"
                                                             data-target="#modal-lg">
                                                         View Details
                                                     </button>
-
+                                                    {% csrf_token %}
                                                     <!-- /.modal -->
 
                                                     <div class="modal fade" id="modal-lg">

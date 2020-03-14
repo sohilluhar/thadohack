@@ -55,6 +55,7 @@ urlpatterns = [
     path('addusertodb', views.addusertodb),
     path('userdashboard', views.userdashboard),
     path('runmlalgo', views.runmlalgo),
+    path('validatedoc', views.validatedoc),
     url(r'^ministry/(?P<pk>\d+)$', views.getallservices),
     url(r'^services/(?P<pk>\d+)$', views.getservice),
     url(r'^autofill/(?P<pk>\d+)$', views.autofill),

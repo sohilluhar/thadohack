@@ -14,11 +14,60 @@ from . import PyConfig
 from .SendMail import sendmail
 
 
+def generatedigitalsign(filen):
+    # !/usr/bin/env vpython3
+    # *-* coding: utf-8 *-*
+    import datetime
+
+    from cryptography.hazmat import backends
+    from cryptography.hazmat.primitives.serialization import pkcs12
+    from endesive import pdf
+
+    # import logging
+    # logging.basicConfig(level=logging.DEBUG)
+
+    date = datetime.datetime.utcnow() - datetime.timedelta(hours=12)
+    date = date.strftime('%Y%m%d%H%M%S+00\'00\'')
+    dct = {
+        b'sigflags': 3,
+        # b'sigpage': 0,
+        b'sigbutton': True,
+        b'signature_img': b'sign.png',
+        b'contact': b'sohil.l@somaiya.edu',
+        b'location': b'India',
+        b'signingdate': date.encode(),
+        b'reason': b'Verified Document',
+        b'signature': b'Approved By Goverment',
+        b'signaturebox': (470, 0, 570, 100),
+    }
+    with open('Key.p12', 'rb') as fp:
+        p12 = pkcs12.load_key_and_certificates(fp.read(), b'Sky@76445', backends.default_backend())
+    fname = filen
+    datau = open(fname, 'rb').read()
+    datas = pdf.cms.sign(datau, dct,
+                         p12[0],
+                         p12[1],
+                         p12[2],
+                         'sha256'
+                         )
+    fname = fname.replace('.pdf', '-signed.pdf')
+    with open(fname, 'wb') as fp:
+        fp.write(datau)
+        fp.write(datas)
+
+
 def connect_firebase():
     firebase = pyrebase.initialize_app(PyConfig.config1)
     auth = firebase.auth()
     db = firebase.database()
     return db
+
+
+def connect_firebasesto():
+    firebase = pyrebase.initialize_app(PyConfig.config1)
+    auth = firebase.auth()
+    dbs = firebase.storage()
+    return dbs
 
 
 def category(request, key):
@@ -414,12 +463,92 @@ def runmlalgo(req):
                    "path": "login"})
 
 
+def validatedoc(req):
+    db = connect_firebase()
+    sname = req.POST['sername']
+    cno = req.POST['cno']
+    name_doc = req.POST['name_doc']
+    key = req.POST['key']
+    msg = ""
+    msg.lower().strip()
+    print(Common.currentUser.get("name"))
+    print(name_doc.lower())
+
+    import requests
+    if name_doc.lower().strip() != Common.currentUser.get("name").lower().strip():
+        return render(req, 'doctument_page2.html',
+                      {"user": Common.currentUser, "key": key,
+                       "error": "Name as in documents do not match name in adhar card"})
+    else:
+
+        ministry_id = db.child("Service").child(str(key)).child("ministry").get().val()
+        found = None
+        try:
+            found = db.child("Documents").child(str(ministry_id)).child(sname).child(cno).get().val()
+        except:
+            pass
+
+        if found == None:
+            return render(req, 'doctument_page2.html',
+                          {"user": Common.currentUser, "key": key,
+                           "error": "Document Not found"})
+        else:
+            responseimg = requests.get(req.POST['fileurl'])
+            storage = connect_firebasesto()
+            path = "tempuserdoc/" + str(Common.currentUser.get("aadharno"))
+            # storage.child(path).download("download.pdf")
+            storage.child("tempuserdoc/co-4g.pdf").download("tempuserdoc/co-4g.pdf", sname + ".pdf")
+            generatedigitalsign(sname + ".pdf")
+            storage.child("DigitalDoc/" + Common.currentUser.get('aadharno') + "/" + sname + ".pdf").put(
+                sname + ".pdf")
+            url = storage.child("DigitalDoc/" + Common.currentUser.get('aadharno') + "/" + sname + ".pdf").get_url(
+                "123")
+
+            data = {
+                "sname": sname, "url": url
+            }
+            try:
+                alldoc = db.child("userdoc").child(Common.currentUser.get("aadharno")).get().val()
+            except:
+                pass
+            if alldoc == None:
+                alldoc = []
+            alldoc.append(data)
+
+            db.child("userdoc").update({Common.currentUser.get("aadharno"): alldoc})
+
+            # -------- GOV DATA
+
+            storage.child("GOVDOC/" + Common.currentUser.get('aadharno') + "/" + sname + ".pdf").put(
+                sname + ".pdf")
+            url = storage.child("GOVDOC/" + Common.currentUser.get('aadharno') + "/" + sname + ".pdf").get_url(
+                "123")
+
+            data = {
+                "sname": sname, "url": url
+            }
+            try:
+                alldoc = db.child("GOVDOC").child(Common.currentUser.get("aadharno")).get().val()
+            except:
+                pass
+            if alldoc == None:
+                alldoc = []
+            alldoc.append(data)
+
+            db.child("GOVDOC").update({Common.currentUser.get("aadharno"): alldoc})
+
+        return render(req, 'redirecthome.html',
+                      {"swicon": "success", "swtitle": "Done", "swmsg": "Done",
+                       "path": "#"})
+
+
 def autofill(req, pk):
     from PIL import Image
     import requests
     from io import BytesIO
 
     response = requests.get(req.POST['fileurl'])
+    key = req.POST['key']
 
     print(req.POST['fileurl'])
     image_path_in_colab = Image.open(BytesIO(response.content))
@@ -434,13 +563,18 @@ def autofill(req, pk):
     if m:
         found = m.group(1)
         print(found, " matches")
+    m1name = re.search('Shri\.(.+?),', extractedInformation)
+    if m1name:
+        foundname = m1name.group(1)
+        print(foundname, " matches")
     db = connect_firebase()
     servicedetails = db.child("Service").child(str(pk)).get().val()
     return render(req, 'doctument_page2.html',
                   {"user": Common.currentUser, "servicedetails": servicedetails, "foundsrno":
-                      found})
+                      found, "extractedInformation": extractedInformation, "urllink": req.POST['fileurl'],
+                   "foundname": foundname, "key": key}
 
-
+                  )
 def addusertodb(request):
     passw = request.POST['pass']
     db = connect_firebase()
