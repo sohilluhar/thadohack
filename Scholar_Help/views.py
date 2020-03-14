@@ -370,6 +370,14 @@ def adminupdattrust(request):
                       {"swicon": "error", "swtitle": "Error", "swmsg": "Please try again", "path": ""})
 
 
+def applyscheme(req):
+    db = connect_firebase()
+    schemes = db.child("Scheme").order_by_key().limit_to_last(9).get().val()
+
+    return render(req, 'viewallscheme.html',
+                  {"scheme": schemes})
+
+
 def trust_login(request):
     return render(request, 'trust_login.html', {})
 
@@ -591,6 +599,8 @@ def autofill(req, pk):
                       found, "extractedInformation": extractedInformation, "urllink": req.POST['fileurl'],
                    "foundname": foundname, "key": key}
                   )
+
+
 def addusertodb(request):
     passw = request.POST['pass']
     db = connect_firebase()
@@ -649,7 +659,11 @@ def userdashboard(req):
 
 def getallservices(req, pk):
     db = connect_firebase()
-    allservice = db.child("Service").order_by_child("ministry").equal_to("123").get().val()
+    allservice = None
+    try:
+        allservice = db.child("Service").order_by_child("ministry").equal_to(str(pk)).get().val()
+    except:
+        pass
     return render(req, 'ministries_service.html', {"user": Common.currentUser, "service": allservice})
 
 
@@ -974,6 +988,22 @@ def viewtrustdetails(request, pk):
 
     return render(request, 'trustdetails.html',
                   {"scheme": schemes, 'trust': trust, "all_trusts": all_trusts, "islog": Common.isLogin
+                   })
+
+
+def schemedetail(req, pk):
+    db = connect_firebase()
+    scheme = db.child("Scheme").child(str(pk)).get().val()
+    isclosed = False
+    print(scheme.get("lastdate"))
+    deadline = datetime.strptime(scheme.get("lastdate"), "%d-%B-%Y")
+    today = datetime.now()
+    if deadline < today:
+        isclosed = True
+
+    return render(req, 'schemedet.html',
+                  {"scheme": scheme, "isclosed": isclosed
+
                    })
 
 

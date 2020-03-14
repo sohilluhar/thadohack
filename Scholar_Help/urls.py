@@ -25,12 +25,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^trust/(?P<pk>\d+)$', views.viewtrustdetails),
     url(r'^scheme/(?P<pk>\d+)$', views.viewschemedetails),
+    url(r'^schemedetails/(?P<pk>\d+)$', views.schemedetail),
     url(r'^getcat([?^/*])', views.category),
 
     path('login/', views.login),
     path('logout/', views.logout),
 
     path('trustlogin/', views.trust_login),
+    path('applyscheme/', views.applyscheme),
     path('trustverify', views.trust_verify),
     path('trusthome/', views.trust_home),
     path('trustlogout/', views.trust_logout),
