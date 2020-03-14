@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^getcat([?^/*])', views.category),
 
     path('login/', views.login),
+    path('userapply/', views.userapply),
     path('logout/', views.logout),
 
     path('trustlogin/', views.trust_login),

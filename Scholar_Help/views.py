@@ -1000,11 +1000,31 @@ def schemedetail(req, pk):
     today = datetime.now()
     if deadline < today:
         isclosed = True
+    db = connect_firebase()
+    alldoc = None
+    try:
+        alldoc = db.child("userdoc").child("335179014426").get().val()
+        # alldoc = db.child("userdoc").child(Common.currentUser.get("aadharno")).get().val()
+    except:
+        pass
 
     return render(req, 'schemedet.html',
-                  {"scheme": scheme, "isclosed": isclosed
-
+                  {"scheme": scheme, "isclosed": isclosed,
+                   "alldoc": alldoc
                    })
+
+
+def userapply(req):
+    applicationid = datetime.timestamp(datetime.now())
+    applicationid = str(applicationid).replace('.', '')
+    applicationid = applicationid[:13]
+    mail = Common.currentUser.get("mail")
+    sendmail(mail, "Successfully Applied",
+             "Your have success fully applied for Scheme. Your application is " + applicationid)
+
+    return render(req, 'redirecthome.html',
+                  {"swicon": "Suceess", "swtitle": "Done", "swmsg": "Your Application id is " + applicationid,
+                   "path": "userdashboard"})
 
 
 def viewschemedetails(request, pk):
