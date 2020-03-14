@@ -382,6 +382,14 @@ def trust_login(request):
     return render(request, 'trust_login.html', {})
 
 
+def uplaoded_doc(request):
+    return render(request, 'uploaded_document.html', {})
+
+
+def pending_doc(request):
+    return render(request, 'pending_document.html', {})
+
+
 def user_aadhar_reg(request):
     return render(request, 'user_adhar_reg.html', {})
 

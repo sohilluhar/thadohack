@@ -31,6 +31,8 @@ urlpatterns = [
     path('login/', views.login),
     path('userapply/', views.userapply),
     path('logout/', views.logout),
+    path('uplaoded_doc/', views.uplaoded_doc),
+    path('pending_doc/', views.pending_doc),
 
     path('trustlogin/', views.trust_login),
     path('applyscheme/', views.applyscheme),
