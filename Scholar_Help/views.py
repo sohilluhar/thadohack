@@ -649,7 +649,7 @@ def userdashboard(req):
 
 def getallservices(req, pk):
     db = connect_firebase()
-    allservice = db.child("Service").order_by_child("ministry").equal_to("123").get().val()
+    allservice = db.child("Service").order_by_child("ministry").equal_to(str(pk)).get().val()
     return render(req, 'ministries_service.html', {"user": Common.currentUser, "service": allservice})
 
 
