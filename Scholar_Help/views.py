@@ -497,7 +497,7 @@ def validatedoc(req):
             storage = connect_firebasesto()
             path = "tempuserdoc/" + str(Common.currentUser.get("aadharno"))
             # storage.child(path).download("download.pdf")
-            storage.child("tempuserdoc/co-4g.pdf").download("tempuserdoc/co-4g.pdf", sname + ".pdf")
+            storage.child("tempuserdoc/domicile.pdf").download("tempuserdoc/domicile.pdf", sname + ".pdf")
             generatedigitalsign(sname + ".pdf")
             storage.child("DigitalDoc/" + Common.currentUser.get('aadharno') + "/" + sname + "-signed.pdf").put(
                 sname + "-signed.pdf")
