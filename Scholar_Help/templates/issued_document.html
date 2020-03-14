@@ -48,65 +48,75 @@
                                     <tr>
 
                                         <th>Document Name</th>
-                                        <th>Issued Date</th>
+                                        {#                                        <th>Issued Date</th>#}
                                         <th class="no-sort">Download</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-{##}
-{#                                    {% for key,values in applied_schemes.items %}#}
+                                    {##}
+                                    {#                                    {% for key,values in applied_schemes.items %}#}
+
+                                    {#                                            <td>{{ key }}</td>#}
+                                    {#                                            <td>{{ values.scheme_name }}#}
+                                    {#                                            </td>#}
+                                    {#                                            <td>{{ values.schemeamount }}</td>#}
+                                    {#                                            <td>{{ values.username }}</td>#}
+                                    {#                                            <td>{{ values.userid }}</td>#}
+                                    {#                                            <td>{{ values.status }}</td>#}
+                                    {#                                            <td>#}
+                                    {#                                                <form method="post" action="/takeaction">#}
+                                    {#                                                    {% csrf_token %}#}
+                                    {#                                                    <input type="hidden" name="userphone" id="userphone"#}
+                                    {#                                                           value="{{ values.userid }}"/>#}
+                                    {#                                                    <input type="hidden" name="applicationid" id="applicationid"#}
+                                    {#                                                           value="{{ key }}"/>#}
+                                    {#                                                    {% if  values.status == "Approve" %}#}
+                                    {#                                                        <button type="submit" class="btn btn-sm">#}
+                                    {#                                                            <span class="text-info"> View </span>#}
+                                    {#                                                        </button>#}
+                                    {#                                                    {% endif %}#}
+                                    {#                                                    {% if values.status == "Reject" %}#}
+                                    {#                                                        <p>#}
+                                    {#                                                            <button type="submit" class="btn btn-sm">#}
+                                    {#                                                                <span class="text-info">Change</span>#}
+                                    {#                                                            </button>#}
+                                    {#                                                        </p>#}
+                                    {#                                                    {% endif %}#}
+                                    {#                                                    {% if  values.status == "Pending" %}#}
+                                    {##}
+                                    {#                                                        <button type="submit" class="btn btn-sm">#}
+                                    {#                                                            <span class="text-info"> Take Action</span>#}
+                                    {#                                                        </button>#}
+                                    {##}
+                                    {#                                                    {% endif %} {% if  values.status == "In-Progress" %}#}
+                                    {##}
+                                    {#                                                    <button type="submit" class="btn btn-sm">#}
+                                    {#                                                        <span class="text-info"> Take Action</span>#}
+                                    {#                                                    </button>#}
+                                    {##}
+                                    {#                                                {% endif %}#}
+                                    {#                                                </form>#}
+                                    {##}
+                                    {##}
+                                    {#                                            </td>#}
+
+
+                                    {#                                    {% endfor %}#}
+
+
+
+                                    {% for values in alldoc %}
+
 
                                         <tr>
-{#                                            <td>{{ key }}</td>#}
-{#                                            <td>{{ values.scheme_name }}#}
-{#                                            </td>#}
-{#                                            <td>{{ values.schemeamount }}</td>#}
-{#                                            <td>{{ values.username }}</td>#}
-{#                                            <td>{{ values.userid }}</td>#}
-{#                                            <td>{{ values.status }}</td>#}
-{#                                            <td>#}
-{#                                                <form method="post" action="/takeaction">#}
-{#                                                    {% csrf_token %}#}
-{#                                                    <input type="hidden" name="userphone" id="userphone"#}
-{#                                                           value="{{ values.userid }}"/>#}
-{#                                                    <input type="hidden" name="applicationid" id="applicationid"#}
-{#                                                           value="{{ key }}"/>#}
-{#                                                    {% if  values.status == "Approve" %}#}
-{#                                                        <button type="submit" class="btn btn-sm">#}
-{#                                                            <span class="text-info"> View </span>#}
-{#                                                        </button>#}
-{#                                                    {% endif %}#}
-{#                                                    {% if values.status == "Reject" %}#}
-{#                                                        <p>#}
-{#                                                            <button type="submit" class="btn btn-sm">#}
-{#                                                                <span class="text-info">Change</span>#}
-{#                                                            </button>#}
-{#                                                        </p>#}
-{#                                                    {% endif %}#}
-{#                                                    {% if  values.status == "Pending" %}#}
-{##}
-{#                                                        <button type="submit" class="btn btn-sm">#}
-{#                                                            <span class="text-info"> Take Action</span>#}
-{#                                                        </button>#}
-{##}
-{#                                                    {% endif %} {% if  values.status == "In-Progress" %}#}
-{##}
-{#                                                    <button type="submit" class="btn btn-sm">#}
-{#                                                        <span class="text-info"> Take Action</span>#}
-{#                                                    </button>#}
-{##}
-{#                                                {% endif %}#}
-{#                                                </form>#}
-{##}
-{##}
-{#                                            </td>#}
-
-                                        <td>Aadhar Card</td>
-                                         <td>12-12-1234</td>
-                                        <td><button class="btn btn-success">Download</button></td>
+                                            <td>{{ values.sname }}</td>
+                                            {#                                            <td>12-12-1234</td>#}
+                                            <td>
+                                                <a class="btn btn-success" href="{{ values.url }}" target="_blank">Download</a>
+                                            </td>
                                         </tr>
 
-{#                                    {% endfor %}#}
+                                    {% endfor %}
                                     </tbody>
 
                                 </table>

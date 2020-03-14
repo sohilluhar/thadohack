@@ -542,6 +542,22 @@ def validatedoc(req):
                        "path": "#"})
 
 
+def issue_doc(req):
+    db = connect_firebase()
+    alldoc = None
+    try:
+        alldoc = db.child("userdoc").child("335179014426").get().val()
+        # alldoc = db.child("userdoc").child(Common.currentUser.get("aadharno")).get().val()
+    except:
+        pass
+
+    print(alldoc)
+
+    return render(req, 'issued_document.html',
+                  {"user": Common.currentUser, "alldoc": alldoc}
+                  )
+
+
 def autofill(req, pk):
     from PIL import Image
     import requests
@@ -573,7 +589,6 @@ def autofill(req, pk):
                   {"user": Common.currentUser, "servicedetails": servicedetails, "foundsrno":
                       found, "extractedInformation": extractedInformation, "urllink": req.POST['fileurl'],
                    "foundname": foundname, "key": key}
-
                   )
 def addusertodb(request):
     passw = request.POST['pass']
