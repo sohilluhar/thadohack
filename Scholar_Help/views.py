@@ -499,9 +499,10 @@ def validatedoc(req):
             # storage.child(path).download("download.pdf")
             storage.child("tempuserdoc/co-4g.pdf").download("tempuserdoc/co-4g.pdf", sname + ".pdf")
             generatedigitalsign(sname + ".pdf")
-            storage.child("DigitalDoc/" + Common.currentUser.get('aadharno') + "/" + sname + ".pdf").put(
-                sname + ".pdf")
-            url = storage.child("DigitalDoc/" + Common.currentUser.get('aadharno') + "/" + sname + ".pdf").get_url(
+            storage.child("DigitalDoc/" + Common.currentUser.get('aadharno') + "/" + sname + "-signed.pdf").put(
+                sname + "-signed.pdf")
+            url = storage.child(
+                "DigitalDoc/" + Common.currentUser.get('aadharno') + "/" + sname + "-signed.pdf").get_url(
                 "123")
 
             data = {
@@ -519,9 +520,9 @@ def validatedoc(req):
 
             # -------- GOV DATA
 
-            storage.child("GOVDOC/" + Common.currentUser.get('aadharno') + "/" + sname + ".pdf").put(
-                sname + ".pdf")
-            url = storage.child("GOVDOC/" + Common.currentUser.get('aadharno') + "/" + sname + ".pdf").get_url(
+            storage.child("GOVDOC/" + Common.currentUser.get('aadharno') + "/" + sname + "-signed.pdf").put(
+                sname + "-signed.pdf")
+            url = storage.child("GOVDOC/" + Common.currentUser.get('aadharno') + "/" + sname + "-signed.pdf").get_url(
                 "123")
 
             data = {
@@ -539,7 +540,7 @@ def validatedoc(req):
 
         return render(req, 'redirecthome.html',
                       {"swicon": "success", "swtitle": "Done", "swmsg": "Done",
-                       "path": "#"})
+                       "path": "issue_doc"})
 
 
 def issue_doc(req):
