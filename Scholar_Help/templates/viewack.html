@@ -19,7 +19,6 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Select</h1>
                     </div>
 
                 </div>
@@ -32,43 +31,74 @@
                 <div class="row">
                     <!-- left column -->
                     <div class="col-md-12">
-                        <!-- jquery validation -->
+
                         <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Document shared successfully</h3>
+                            </div>
 
 
                             <!-- /.card-header -->
-
+                            <!-- form start -->
 
                             <div class="card-body">
 
-                                <div class="row">
 
-                                    {% for key,val in service.items %}
-
-                                        <div class="col-md-3 col-sm-6 col-12">
-                                            <a href="/services/{{ key }}" class="text-dark">
-
-                                                <div class="card" style="width: 13rem; height: 13rem;">
-                                                    <img src="{{ val.logo }}" class="card-img-top"
-                                                         alt="..." height="140px" width="40px">
-                                                    <div class="card-body">
-                                                        <h5 class="text-center">{{ val.name }}</h5>
-
-                                                    </div>
+                                <div class="card card-primary card-outline">
+                                    <div class="card-header">
+                                        <h5 class="m-0">{{ scheme.name }}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Description </label>
+                                                    <textarea class="form-control" rows="3"
+                                                              name="address" id="address"
+                                                              placeholder="Enter address"
+                                                              disabled
+                                                    >{{ scheme.description }}</textarea>
                                                 </div>
-                                            </a>
+                                            </div>
                                         </div>
-                                        <!-- /.col -->
-
-                                    {% endfor %}
 
 
+                                        <div class="row">
+                                        <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Summary (Auto Generated) </label>
+                                                    <textarea class="form-control" rows="3"
+                                                              name="address" id="address"
+                                                              placeholder="Enter address"
+                                                              disabled
+                                                    >{{ summary }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                                    <label>Shared Document</label>
+
+<iframe src="{{ url }}" width="100%" height="700px" ></iframe>
+
+
+
+</div>
+
+
+                                    </div>
                                 </div>
-                                <!-- /.row -->
+                            </div>
+                            <!-- /.card-body -->
+
+
+
+
+
+                            <div class="card-footer">
+
 
                             </div>
-
-                            <!-- /.card-body -->
 
                         </div>
                         <!-- /.card -->

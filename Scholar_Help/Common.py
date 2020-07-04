@@ -12,4 +12,5 @@ admin = None
 adharotp = None
 adharotptime = None
 tempuser = None
+schemedetails=None
 # comment

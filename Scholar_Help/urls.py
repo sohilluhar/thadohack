@@ -22,6 +22,10 @@ from . import views
 # from Scholar_Help.views import home, login, register
 
 urlpatterns = [
+
+    url(r'^geturl([?^/*])', views.saveurl),
+    path('printurl/', views.printurl),
+
     path('admin/', admin.site.urls),
     url(r'^trust/(?P<pk>\d+)$', views.viewtrustdetails),
     url(r'^scheme/(?P<pk>\d+)$', views.viewschemedetails),

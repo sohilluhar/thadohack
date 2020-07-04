@@ -13,6 +13,16 @@ from . import Common
 from . import PyConfig
 from .SendMail import sendmail
 
+docurl =""
+
+def saveurl(request, key):
+    global docurl
+    var = request.GET['url']
+    docurl=var
+    return HttpResponseRedirect('/userdashboard')
+
+def printurl(req):
+    return render(req, 'test.html', {"msg": "url is "+docurl})
 
 def generatedigitalsign(filen):
     # !/usr/bin/env vpython3
@@ -70,6 +80,9 @@ def connect_firebasesto():
     return dbs
 
 
+
+
+
 def category(request, key):
     db = connect_firebase()
     schemes = OrderedDict()
@@ -79,6 +92,7 @@ def category(request, key):
     except:
         print("Error")
     return render(request, 'category.html', {"scheme": schemes, "islog": Common.isLogin})
+
 
 
 def home(request):
@@ -662,7 +676,7 @@ def userdashboard(req):
     db = connect_firebase()
     ministry = db.child("Ministry").get().val()
     return render(req, 'ministries.html',
-                  {"user": Common.currentUser, "ministry": ministry})
+                  {"ministry": ministry})
 
 
 def getallservices(req, pk):
@@ -677,7 +691,11 @@ def getallservices(req, pk):
 
 def getservice(req, pk):
     db = connect_firebase()
+
+
     servicedetails = db.child("Service").child(str(pk)).get().val()
+    Common.schemedetails=servicedetails
+
     return render(req, 'doctument_page.html',
                   {"user": Common.currentUser, "servicedetails": servicedetails, "key": str(pk)})
 
@@ -1004,35 +1022,23 @@ def schemedetail(req, pk):
     scheme = db.child("Scheme").child(str(pk)).get().val()
     isclosed = False
     print(scheme.get("lastdate"))
-    deadline = datetime.strptime(scheme.get("lastdate"), "%d-%B-%Y")
-    today = datetime.now()
-    if deadline < today:
-        isclosed = True
+    Common.schemedetails=scheme
     db = connect_firebase()
-    alldoc = None
-    try:
-        alldoc = db.child("userdoc").child("335179014426").get().val()
-        # alldoc = db.child("userdoc").child(Common.currentUser.get("aadharno")).get().val()
-    except:
-        pass
 
     return render(req, 'schemedet.html',
                   {"scheme": scheme, "isclosed": isclosed,
-                   "alldoc": alldoc
+
                    })
 
 
 def userapply(req):
-    applicationid = datetime.timestamp(datetime.now())
-    applicationid = str(applicationid).replace('.', '')
-    applicationid = applicationid[:13]
-    mail = Common.currentUser.get("mail")
-    sendmail(mail, "Successfully Applied",
-             "Your have success fully applied for Scheme. Your application is " + applicationid)
 
-    return render(req, 'redirecthome.html',
-                  {"swicon": "Suceess", "swtitle": "Done", "swmsg": "Your Application id is " + applicationid,
-                   "path": "userdashboard"})
+    #TODO runocr
+
+
+    return render(req, 'viewack.html',
+                  {'summary':"Blood group A",'scheme':
+    Common.schemedetails,"url":docurl})
 
 
 def viewschemedetails(request, pk):
